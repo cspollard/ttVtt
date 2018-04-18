@@ -60,12 +60,21 @@ def main(infname, outfname):
   habseta_t1_notFromV = ROOT.TH1F("habseta_t1_notFromV", "habseta_t1_notFromV", 100, 0, 5)
   habseta_t2_notFromV = ROOT.TH1F("habseta_t2_notFromV", "habseta_t2_notFromV", 100, 0, 5)
 
+  hpt_t3_notFromV = ROOT.TH1F("hpt_t3_notFromV", "hpt_t3_notFromV", 100, 0, 1*TeV)
+  hpt_t4_notFromV = ROOT.TH1F("hpt_t4_notFromV", "hpt_t4_notFromV", 100, 0, 1*TeV)
+  habseta_t3_notFromV = ROOT.TH1F("habseta_t3_notFromV", "habseta_t3_notFromV", 100, 0, 5)
+  habseta_t4_notFromV = ROOT.TH1F("habseta_t4_notFromV", "habseta_t4_notFromV", 100, 0, 5)
+
   allHists = \
-    [ hptt1, hptt2, hptt3, hptt4, habsetat1, habsetat2
-    , habsetat3, habsetat4, hmtt_centraltops, hmtt_leadingtops
-    , hpt_t1_fromV, hpt_t2_fromV, hpt_t1_notFromV, hpt_t2_notFromV
-    , habseta_t1_fromV, habseta_t2_fromV, habseta_t1_notFromV
-    , habseta_t2_notFromV, hmtt_fromV 
+    [ hptt1, hptt2, hptt3, hptt4
+    , habsetat1, habsetat2 , habsetat3, habsetat4
+    , hmtt_centraltops, hmtt_leadingtops, hmtt_fromV 
+    , hpt_t1_fromV, hpt_t2_fromV
+    , habseta_t1_fromV, habseta_t2_fromV
+    , hpt_t1_notFromV, hpt_t2_notFromV
+    , habseta_t1_notFromV, habseta_t2_notFromV
+    , hpt_t3_notFromV, hpt_t4_notFromV
+    , habseta_t3_notFromV, habseta_t4_notFromV
     ]
 
   for evt in pylhe.readLHE(infname):
@@ -113,6 +122,12 @@ def main(infname, outfname):
       hpt_t2_notFromV.Fill(topsNotFromV[1].tlv.Pt(), wgt)
       habseta_t1_notFromV.Fill(abs(topsNotFromV[0].tlv.Eta()), wgt)
       habseta_t2_notFromV.Fill(abs(topsNotFromV[1].tlv.Eta()), wgt)
+
+    if len(topsNotFromV) >= 4:
+      hpt_t3_notFromV.Fill(topsNotFromV[2].tlv.Pt(), wgt)
+      hpt_t4_notFromV.Fill(topsNotFromV[3].tlv.Pt(), wgt)
+      habseta_t3_notFromV.Fill(abs(topsNotFromV[2].tlv.Eta()), wgt)
+      habseta_t4_notFromV.Fill(abs(topsNotFromV[3].tlv.Eta()), wgt)
 
   # scale by 100/fb
   for h in allHists:
