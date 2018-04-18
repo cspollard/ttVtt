@@ -86,7 +86,7 @@ namespace Rivet {
 
       const Particles& leps = apply<PromptFinalState>(event, "PromptLeptons").particles();
       const Jets& jets = apply<FastJets>(event, "Jets").jetsByPt(Cuts::pT > 25*GeV);
-      const Jets& fatjets = apply<FastJets>(event, "FatJets").jetsByPt(Cuts::pT > 300*GeV && Cuts::abseta < 2.5);
+      const Jets& fatjets = apply<FastJets>(event, "FatJets").jetsByPt(Cuts::pT > 300*GeV && Cuts::abseta < 2.0);
 
       double weight = event.weight();
 
