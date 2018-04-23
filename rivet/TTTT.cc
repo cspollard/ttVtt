@@ -199,8 +199,8 @@ namespace Rivet {
           ptth_lJ->fill(th.pt()/TeV, weight);
           pttl_lJ->fill(tl.pt()/TeV, weight);
 
-          mtl_lJ->fill(tl.mass()/TeV, weight);
-          mth_lJ->fill(th.mass()/TeV, weight);
+          mtl_lJ->fill(tl.mass()/GeV, weight);
+          mth_lJ->fill(th.mass()/GeV, weight);
 
           dphitt_lJ->fill(abs(deltaPhi(tl, th)), weight);
 
@@ -270,8 +270,8 @@ namespace Rivet {
           pttl_ssJ->fill(tl.pt()/TeV, weight);
           ptth_ssJ->fill(th.pt()/TeV, weight);
 
-          mtl_ssJ->fill(tl.mass()/TeV, weight);
-          mth_ssJ->fill(th.mass()/TeV, weight);
+          mtl_ssJ->fill(tl.mass()/GeV, weight);
+          mth_ssJ->fill(th.mass()/GeV, weight);
 
           dphitt_ssJ->fill(abs(deltaPhi(tl, th)), weight);
 
