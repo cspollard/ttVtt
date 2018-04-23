@@ -8,6 +8,31 @@
 
 namespace Rivet {
 
+  // from https://stackoverflow.com/questions/3418231/replace-part-of-a-string-with-another-string
+  string replace(const string& str, const string& from, const string& to) {
+    string ret = str;
+    size_t start_pos = str.find(from);
+    if(start_pos == std::string::npos)
+      return ret;
+    ret.replace(start_pos, from.length(), to);
+    return ret;
+  }
+
+
+  const string ptstr = "\\ensuremath{p_\\mathrm{T}}";
+  const string ptttstr = "\\ensuremath{p_\\mathrm{T}(tt)}";
+  const string mttstr = "\\ensuremath{m_{tt}}";
+  const string mstr = "\\ensuremath{m}";
+  const string nstr = "\\ensuremath{n}";
+  const string dphittstr = "\\ensuremath{\\Delta\\phi(tt)}";
+
+  string dxdy(const string& x, const string& y, const string& xunit, const string& yunit) {
+    return "\\ensuremath{\\frac{\\mathrm{d}" + x + "}{\\mathrm{d}" + y + "} \\Big[ \\frac{" + xunit + "}{" + yunit + "} \\Big]}";
+  }
+
+  string dsigdy(const string& x, const string& xunit) {
+    return dxdy(x, "\\sigma", xunit, "\\mathrm{pb}");
+  }
 
   /// @brief Add a short analysis description here
   class TTTT : public Analysis {
@@ -36,57 +61,66 @@ namespace Rivet {
       declare(FastJets(vfs, FastJets::ANTIKT, 1.0), "FatJets");
 
 
-      njets = bookH("njets", 21, -0.5, 20.5, "number of jets in acceptance");
-      nfatjets = bookH("nfatjets", 4, -0.5, 3.5, "number of fatjets in acceptance");
-      nleps = bookH("nleps", 5, -0.5, 4.5, "number of prompt leptons in acceptance");
+      njets = bookH("njets", 21, -0.5, 20.5, "njets", "jet multiplicity", dsigdy(nstr, "1"));
+      ncentjets = bookH("ncentjets", 21, -0.5, 20.5, "ncentjets", "central jet multiplicity", dsigdy(nstr, "1"));
+      nfwdjets = bookH("nfwdjets", 11, -0.5, 10.5, "nfwdjets", "forward jet multiplicity", dsigdy(nstr, "1"));
+      nfatjets = bookH("nfatjets", 4, -0.5, 3.5, "nfatjets", "large-$R$ jet multiplicity", dsigdy(nstr, "1"));
+      nleps = bookH("nleps", 5, -0.5, 4.5, "nleps", "prompt lepton multiplicity", dsigdy(nstr, "1"));
 
-      njets_lJ = bookH("njets_lJ", 21, -0.5, 20.5, "number of jets in acceptance (l+J)");
-      njets_lJJ = bookH("njets_lJJ", 21, -0.5, 20.5, "number of jets in acceptance (l+JJ)");
-      njets_ssJ = bookH("njets_ssJ", 21, -0.5, 20.5, "number of jets in acceptance (ss+J)");
+      njets_lJ = bookH("njets_lJ", 21, -0.5, 20.5, "njets_lJ", "jet multiplicity", dsigdy(nstr, "1"));
+      ncentjets_lJ = bookH("ncentjets_lJ", 21, -0.5, 20.5, "ncentjets_lJ", "central jet multiplicity", dsigdy(nstr, "1"));
+      nfwdjets_lJ = bookH("nfwdjets_lJ", 11, -0.5, 10.5, "nfwdjets_lJ", "forward jet multiplicity", dsigdy(nstr, "1"));
+      naddjets_lJ = bookH("naddjets_lJ", 21, -0.5, 20.5, "naddjets_lJ", "additional jet multiplicity", dsigdy(nstr, "1"));
+      nfatjets_lJ = bookH("nfatjets_lJ", 4, -0.5, 3.5, "nfatjets_lJ", "large-$R$ jet multiplicity", dsigdy(nstr, "1"));
 
-      nfatjets_lJ = bookH("nfatjets_lJ", 4, -0.5, 3.5, "number of fatjets in acceptance (l+J)");
-      nfatjets_lJJ = bookH("nfatjets_lJJ", 4, -0.5, 3.5, "number of fatjets in acceptance (l+JJ)");
-      nfatjets_ssJ = bookH("nfatjets_ssJ", 4, -0.5, 3.5, "number of fatjets in acceptance (ss+J)");
+      njets_lJJ = bookH("njets_lJJ", 21, -0.5, 20.5, "njets_lJJ", "jet multiplicity", dsigdy(nstr, "1"));
+      ncentjets_lJJ = bookH("ncentjets_lJJ", 21, -0.5, 20.5, "ncentjets_lJJ", "central jet multiplicity", dsigdy(nstr, "1"));
+      nfwdjets_lJJ = bookH("nfwdjets_lJJ", 11, -0.5, 10.5, "nfwdjets_lJJ", "forward jet multiplicity", dsigdy(nstr, "1"));
+      naddjets_lJJ = bookH("naddjets_lJ", 21, -0.5, 20.5, "naddjets_lJ", "additional jet multiplicity", dsigdy(nstr, "1"));
+      nfatjets_lJJ = bookH("nfatjets_lJJ", 4, -0.5, 3.5, "nfatjets_lJJ", "large-$R$ jet multiplicity", dsigdy(nstr, "1"));
 
-      naddjets_lJ = bookH("naddjets_lJ", 21, -0.5, 20.5, "number of additional jets in acceptance (l+J)");
-      naddjets_lJJ = bookH("naddjets_lJJ", 21, -0.5, 20.5, "number of additional jets in acceptance (l+JJ)");
-      naddjets_ssJ = bookH("naddjets_ssJ", 21, -0.5, 20.5, "number of additional jets in acceptance (ss+J)");
+      njets_ssJ = bookH("njets_ssJ", 21, -0.5, 20.5, "njets_ssJ", "jet multiplicity", dsigdy(nstr, "1"));
+      ncentjets_ssJ = bookH("ncentjets_ssJ", 21, -0.5, 20.5, "ncentjets_ssJ", "central jet multiplicity", dsigdy(nstr, "1"));
+      nfwdjets_ssJ = bookH("nfwdjets_ssJ", 11, -0.5, 10.5, "nfwdjets_ssJ", "forward jet multiplicity", dsigdy(nstr, "1"));
+      naddjets_ssJ = bookH("naddjets_lJ", 21, -0.5, 20.5, "naddjets_lJ", "additional jet multiplicity", dsigdy(nstr, "1"));
+      nfatjets_ssJ = bookH("nfatjets_ssJ", 4, -0.5, 3.5, "nfatjets_ssJ", "large-$R$ jet multiplicity", dsigdy(nstr, "1"));
 
-      ptth_lJ = bookH("ptth_lJ", 25, 0, 2*TeV, "hadronic top $p_\\mathrm{T}$ (l+J)");
-      pttl_lJ = bookH("pttl_lJ", 25, 0, 2*TeV, "leptonic top $p_\\mathrm{T}$ (l+J)");
-      ptth1_lJJ = bookH("ptth1_lJJ", 25, 0, 2*TeV, "leading hadronic top $p_\\mathrm{T}$ (l+JJ)");
-      ptth2_lJJ = bookH("ptth2_lJJ", 25, 0, 2*TeV, "subleading hadronic top $p_\\mathrm{T}$ (l+JJ)");
-      ptth_ssJ = bookH("ptth_ssJ", 25, 0, 2*TeV, "hadronic top $p_\\mathrm{T}$ (ss+J)");
-      pttl_ssJ = bookH("pttl_ssJ", 25, 0, 2*TeV, "leptonic top $p_\\mathrm{T}$ (ss+J)");
+      ptth_lJ = bookH("ptth_lJ", 25, 0, 2, "ptth_lJ", "hadronic top $p_\\mathrm{T}$ [TeV]", dsigdy(ptstr, "\\mathrm{TeV}"));
+      pttl_lJ = bookH("pttl_lJ", 25, 0, 2, "pttl_lJ", "leptonic top $p_\\mathrm{T}$ [TeV]", dsigdy(ptstr, "\\mathrm{TeV}"));
+      ptth1_lJJ = bookH("ptth1_lJJ", 25, 0, 2, "ptth1_lJJ", "leading hadronic top $p_\\mathrm{T}$ [TeV]", dsigdy(ptstr, "\\mathrm{TeV}"));
+      ptth2_lJJ = bookH("ptth2_lJJ", 25, 0, 2, "ptth2_lJJ", "subleading hadronic top $p_\\mathrm{T}$ [TeV]", dsigdy(ptstr, "\\mathrm{TeV}"));
+      ptth_ssJ = bookH("ptth_ssJ", 25, 0, 2, "ptth_ssJ", "hadronic top $p_\\mathrm{T}$ [TeV]", dsigdy(ptstr, "\\mathrm{TeV}"));
+      pttl_ssJ = bookH("pttl_ssJ", 25, 0, 2, "pttl_ssJ", "leptonic top $p_\\mathrm{T}$ [TeV]", dsigdy(ptstr, "\\mathrm{TeV}"));
 
-      ptl1_lJ = bookH("ptl1_lJ", 25, 0, 1*TeV, "leading lepton $p_\\mathrm{T}$ (l+J)");
-      ptl1_lJJ = bookH("ptl1_lJJ", 25, 0, 1*TeV, "leading lepton $p_\\mathrm{T}$ (l+JJ)");
-      ptl1_ssJ = bookH("ptl1_ssJ", 25, 0, 1*TeV, "leading lepton $p_\\mathrm{T}$ (ss+J)");
-      ptl2_ssJ = bookH("ptl2_ssJ", 25, 0, 1*TeV, "subleading lepton $p_\\mathrm{T}$ (ss+J)");
+      ptl1_lJ = bookH("ptl1_lJ", 25, 0, 1e3, "ptl1_lJ", "leading lepton $p_\\mathrm{T}$ [GeV]", dsigdy(ptstr, "\\mathrm{GeV}"));
+      ptl1_lJJ = bookH("ptl1_lJJ", 25, 0, 1e3, "ptl1_lJJ", "leading lepton $p_\\mathrm{T}$ [GeV]", dsigdy(ptstr, "\\mathrm{GeV}"));
+      ptl1_ssJ = bookH("ptl1_ssJ", 25, 0, 1e3, "ptl1_lJJ", "leading lepton $p_\\mathrm{T}$ [GeV]", dsigdy(ptstr, "\\mathrm{GeV}"));
+      ptl2_ssJ = bookH("ptl2_ssJ", 25, 0, 1e3, "ptl2_ssJ", "subleading lepton $p_\\mathrm{T}$ [GeV]", dsigdy(ptstr, "\\mathrm{GeV}"));
 
-      mth_lJ = bookH("mth_lJ", 25, 0, 500*GeV, "hadronic top mass (l+J)");
-      mtl_lJ = bookH("mtl_lJ", 25, 0, 500*GeV, "leptonic top mass (l+J)");
-      mth1_lJJ = bookH("mth1_lJJ", 25, 0, 500*GeV, "leading hadronic top mass (l+JJ)");
-      mth2_lJJ = bookH("mth2_lJJ", 25, 0, 500*GeV, "leading hadronic top mass (l+JJ)");
-      mth_ssJ = bookH("mth_ssJ", 25, 0, 500*GeV, "hadronic top mass (ss+J)");
-      mtl_ssJ = bookH("mtl_ssJ", 25, 0, 500*GeV, "leptonic top mass (ss+J)");
+      mth_lJ = bookH("mth_lJ", 25, 0, 500, "mth_lJ", "hadronic top mass [GeV]", dsigdy(mstr, "\\mathrm{GeV}"));
+      mtl_lJ = bookH("mtl_lJ", 25, 0, 500, "mtl_lJ", "leptonic top mass [GeV]", dsigdy(mstr, "\\mathrm{GeV}"));
+      mth1_lJJ = bookH("mth1_lJJ", 25, 0, 500, "mth1_lJJ", "leading hadronic top mass [GeV]", dsigdy(mstr, "\\mathrm{GeV}"));
+      mth2_lJJ = bookH("mth2_lJJ", 25, 0, 500, "mth2_lJJ", "subleading hadronic top mass [GeV]", dsigdy(mstr, "\\mathrm{GeV}"));
+      mth_ssJ = bookH("mth_ssJ", 25, 0, 500, "mth_ssJ", "hadronic top mass [GeV]", dsigdy(mstr, "\\mathrm{GeV}"));
+      mtl_ssJ = bookH("mtl_ssJ", 25, 0, 500, "mtl_ssJ", "leptonic top mass [GeV]", dsigdy(mstr, "\\mathrm{GeV}"));
 
-      dphitt_lJ = bookH("dphitt_lJ", 20, 0, 4, "$d\\phi(tt)$ (l+J)");
-      dphitt_lJJ = bookH("dphitt_lJJ", 20, 0, 4, "$d\\phi(tt)$ (l+JJ)");
-      dphitt_ssJ = bookH("dphitt_ssJ", 20, 0, 4, "$d\\phi(tt)$ (ss+J)");
+      dphitt_lJ = bookH("dphitt_lJ", 20, 0, 4, "dphitt_lJ", dphittstr, dsigdy(dphittstr, "\\mathrm{rad}"));
+      dphitt_lJJ = bookH("dphitt_lJJ", 20, 0, 4, "dphitt_lJJ", dphittstr, dsigdy(dphittstr, "\\mathrm{rad}"));
+      dphitt_ssJ = bookH("dphitt_ssJ", 20, 0, 4, "dphitt_ssJ", dphittstr, dsigdy(dphittstr, "\\mathrm{rad}"));
 
-      pttt_lJ = bookH("pttt_lJ", 25, 0, 500*GeV, "$tt$ $p_\\mathrm{T}$ (l+J)");
-      pttt_lJJ = bookH("pttt_lJJ", 25, 0, 500*GeV, "$tt$ $p_\\mathrm{T}$ (l+JJ)");
-      pttt_ssJ = bookH("pttt_ssJ", 25, 0, 500*GeV, "$tt$ $p_\\mathrm{T}$ (ss+J)");
+      pttt_lJ = bookH("pttt_lJ", 25, 0, 1, "pttt_lJ", ptttstr + " [TeV]", dsigdy(ptttstr, "\\mathrm{TeV}"));
+      pttt_lJJ = bookH("pttt_lJJ", 25, 0, 1, "pttt_lJJ", ptttstr + " [TeV]", dsigdy(ptttstr, "\\mathrm{TeV}"));
+      pttt_ssJ = bookH("pttt_ssJ", 25, 0, 1, "pttt_ssJ", ptttstr + " [TeV]", dsigdy(ptttstr, "\\mathrm{TeV}"));
 
-      mtt_lJ = bookH("mtt_lJ", 15, 0, 3*TeV, "$tt$ invariant mass (l+J)");
-      mtt_lJJ = bookH("mtt_lJJ", 15, 0, 3*TeV, "$tt$ invariant mass (l+JJ)");
-      mtt_ssJ = bookH("mtt_ssJ", 15, 0, 3*TeV, "$tt$ invariant mass (ss+J)");
+      mtt_lJ = bookH("mtt_lJ", 15, 0, 3, "mtt_lJ", "$tt$ invariant mass [TeV]", dsigdy(mttstr, "\\mathrm{TeV}"));
+      mtt_lJJ = bookH("mtt_lJJ", 15, 0, 3, "mtt_lJJ", "$tt$ invariant mass [TeV]", dsigdy(mttstr, "\\mathrm{TeV}"));
+      mtt_ssJ = bookH("mtt_ssJ", 15, 0, 3, "mtt_ssJ", "$tt$ invariant mass [TeV]", dsigdy(mttstr, "\\mathrm{TeV}"));
 
     }
 
-    Histo1DPtr bookH(const string& path, double nb, double bmin, double bmax, const string& title) {
-      Histo1DPtr h = bookHisto1D(path, nb, bmin, bmax, title);
+    Histo1DPtr bookH(const string& path, double nb, double bmin, double bmax
+        , const string& title, const string& xlabel, const string& ylabel) {
+      Histo1DPtr h = bookHisto1D(path, nb, bmin, bmax, title, xlabel, ylabel);
       allHists.push_back(h);
       return h;
     }
@@ -119,6 +153,10 @@ namespace Rivet {
 
       const Particles& leps = apply<PromptFinalState>(event, "PromptLeptons").particles();
       const Jets& jets = apply<FastJets>(event, "Jets").jetsByPt(Cuts::pT > 25*GeV);
+      const Jets& centjets =
+        apply<FastJets>(event, "Jets").jetsByPt(Cuts::pT > 25*GeV && Cuts::abseta < 2.5);
+      const Jets& fwdjets =
+        apply<FastJets>(event, "Jets").jetsByPt(Cuts::pT > 25*GeV && Cuts::abseta > 2.5);
       const Jets& fatjets =
         apply<FastJets>(event, "FatJets").jetsByPt(Cuts::pT > 300*GeV && Cuts::abseta < 2.0 && Cuts::mass > 100*GeV);
 
@@ -126,13 +164,17 @@ namespace Rivet {
 
       nleps->fill(leps.size(), weight);
       njets->fill(jets.size(), weight);
+      ncentjets->fill(centjets.size(), weight);
+      nfwdjets->fill(fwdjets.size(), weight);
       nfatjets->fill(fatjets.size(), weight);
 
 
       if (leps.size() == 1 && fatjets.size() == 1) {
         njets_lJ->fill(jets.size(), weight);
+        ncentjets_lJ->fill(centjets.size(), weight);
+        nfwdjets_lJ->fill(fwdjets.size(), weight);
         nfatjets_lJ->fill(fatjets.size(), weight);
-        ptl1_lJ->fill(leps[0].pt(), weight);
+        ptl1_lJ->fill(leps[0].pt()/GeV, weight);
 
         Jets goodfatjets = fatjets;
         vector<const Jet*> goodjets = additionalJets(jets, goodfatjets);
@@ -154,26 +196,29 @@ namespace Rivet {
           FourMomentum th = goodfatjets[0].mom();
           FourMomentum tt = tl + th;
 
-          ptth_lJ->fill(th.pt(), weight);
-          pttl_lJ->fill(tl.pt(), weight);
+          ptth_lJ->fill(th.pt()/TeV, weight);
+          pttl_lJ->fill(tl.pt()/TeV, weight);
 
-          mtl_lJ->fill(tl.mass(), weight);
-          mth_lJ->fill(th.mass(), weight);
+          mtl_lJ->fill(tl.mass()/TeV, weight);
+          mth_lJ->fill(th.mass()/TeV, weight);
 
           dphitt_lJ->fill(abs(deltaPhi(tl, th)), weight);
 
-          pttt_lJ->fill(tt.pt(), weight);
-          mtt_lJ->fill(tt.mass(), weight);
+          pttt_lJ->fill(tt.pt()/TeV, weight);
+          mtt_lJ->fill(tt.mass()/TeV, weight);
         }
 
       } else if (leps.size() == 1 && fatjets.size() >= 2) {
         njets_lJJ->fill(jets.size(), weight);
+        ncentjets_lJJ->fill(centjets.size(), weight);
+        nfwdjets_lJJ->fill(fwdjets.size(), weight);
         nfatjets_lJJ->fill(fatjets.size(), weight);
-        ptth1_lJJ->fill(fatjets[0].pt(), weight);
-        ptth2_lJJ->fill(fatjets[1].pt(), weight);
-        mth1_lJJ->fill(fatjets[0].mass(), weight);
-        mth2_lJJ->fill(fatjets[1].mass(), weight);
-        ptl1_lJJ->fill(leps[0].pt(), weight);
+
+        ptth1_lJJ->fill(fatjets[0].pt()/TeV, weight);
+        ptth2_lJJ->fill(fatjets[1].pt()/TeV, weight);
+        mth1_lJJ->fill(fatjets[0].mass()/GeV, weight);
+        mth2_lJJ->fill(fatjets[1].mass()/GeV, weight);
+        ptl1_lJJ->fill(leps[0].pt()/GeV, weight);
 
         Jets goodfatjets;
         goodfatjets.push_back(fatjets[0]);
@@ -185,19 +230,21 @@ namespace Rivet {
         FourMomentum t2 = goodfatjets[1].mom();
         FourMomentum tt = t1 + t2;
 
-        mth1_lJJ->fill(t1.mass(), weight);
-        mth2_lJJ->fill(t2.mass(), weight);
+        mth1_lJJ->fill(t1.mass()/GeV, weight);
+        mth2_lJJ->fill(t2.mass()/GeV, weight);
 
         dphitt_lJJ->fill(abs(deltaPhi(t1, t2)), weight);
 
-        pttt_lJJ->fill(tt.pt(), weight);
-        mtt_lJJ->fill(tt.mass(), weight);
+        pttt_lJJ->fill(tt.pt()/TeV, weight);
+        mtt_lJJ->fill(tt.mass()/TeV, weight);
 
       } else if (leps.size() == 2 && fatjets.size() >= 1 && leps[0].threeCharge()*leps[1].threeCharge() > 0 ) {
         njets_ssJ->fill(jets.size(), weight);
+        ncentjets_ssJ->fill(centjets.size(), weight);
+        nfwdjets_ssJ->fill(fwdjets.size(), weight);
         nfatjets_ssJ->fill(fatjets.size(), weight);
-        ptl1_ssJ->fill(leps[0].pt(), weight);
-        ptl2_ssJ->fill(leps[1].pt(), weight);
+        ptl1_ssJ->fill(leps[0].pt()/GeV, weight);
+        ptl2_ssJ->fill(leps[1].pt()/GeV, weight);
 
         Jets goodfatjets;
         goodfatjets.push_back(fatjets[0]);
@@ -220,16 +267,16 @@ namespace Rivet {
           FourMomentum th = goodfatjets[0].mom();
           FourMomentum tt = tl + th;
 
-          pttl_ssJ->fill(tl.pt(), weight);
-          ptth_ssJ->fill(th.pt(), weight);
+          pttl_ssJ->fill(tl.pt()/TeV, weight);
+          ptth_ssJ->fill(th.pt()/TeV, weight);
 
-          mtl_ssJ->fill(tl.mass(), weight);
-          mth_ssJ->fill(th.mass(), weight);
+          mtl_ssJ->fill(tl.mass()/TeV, weight);
+          mth_ssJ->fill(th.mass()/TeV, weight);
 
           dphitt_ssJ->fill(abs(deltaPhi(tl, th)), weight);
 
-          pttt_ssJ->fill(tt.pt(), weight);
-          mtt_ssJ->fill(tt.mass(), weight);
+          pttt_ssJ->fill(tt.pt()/TeV, weight);
+          mtt_ssJ->fill(tt.mass()/TeV, weight);
         }
 
       }
@@ -240,10 +287,14 @@ namespace Rivet {
 
     /// Normalise histograms etc., after the run
     void finalize() {
+      const string onebysig = "\\ensuremath{\\frac{1}{\\sigma}}";
+
+
       for (Histo1DPtr& h : allHists) {
         Histo1DPtr hnorm = make_shared<Histo1D>(*h);
         normalize(hnorm);
         hnorm->setPath(hnorm->path() + "_norm");
+        hnorm->setAnnotation("YLabel", onebysig + replace(hnorm->annotation("YLabel"), "pb", "1"));
         addAnalysisObject(hnorm);
 
         scale(h, crossSection()/sumOfWeights());
@@ -258,20 +309,28 @@ namespace Rivet {
     /// @name Histograms
     //@{
     Histo1DPtr njets;
+    Histo1DPtr ncentjets;
+    Histo1DPtr nfwdjets;
     Histo1DPtr nfatjets;
     Histo1DPtr nleps;
 
     Histo1DPtr njets_lJ;
-    Histo1DPtr njets_lJJ;
-    Histo1DPtr njets_ssJ;
-
-    Histo1DPtr nfatjets_lJ;
-    Histo1DPtr nfatjets_lJJ;
-    Histo1DPtr nfatjets_ssJ;
-
+    Histo1DPtr ncentjets_lJ;
+    Histo1DPtr nfwdjets_lJ;
     Histo1DPtr naddjets_lJ;
+    Histo1DPtr nfatjets_lJ;
+
+    Histo1DPtr njets_lJJ;
+    Histo1DPtr ncentjets_lJJ;
+    Histo1DPtr nfwdjets_lJJ;
     Histo1DPtr naddjets_lJJ;
+    Histo1DPtr nfatjets_lJJ;
+
+    Histo1DPtr njets_ssJ;
+    Histo1DPtr ncentjets_ssJ;
+    Histo1DPtr nfwdjets_ssJ;
     Histo1DPtr naddjets_ssJ;
+    Histo1DPtr nfatjets_ssJ;
 
     Histo1DPtr ptth_lJ;
     Histo1DPtr pttl_lJ;
