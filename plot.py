@@ -36,6 +36,14 @@ def main(infname, outfname):
 
   outf = ROOT.TFile(outfname, "CREATE")
 
+  hpz_g1 = ROOT.TH1F("hpz_g1", "hpz_g1", 100, 0, 4*TeV)
+  hpz_g2 = ROOT.TH1F("hpz_g2", "hpz_g2", 100, 0, 4*TeV)
+  hmgg = ROOT.TH1F("hmgg", "hmgg", 100, 0, 4*TeV)
+  hpzgg = ROOT.TH1F("hpzgg", "hpzgg", 100, 0, 4*TeV)
+
+  hptv1 = ROOT.TH1F("hptv1", "hptv1", 100, 0, 2*TeV)
+  hpzv1 = ROOT.TH1F("hpzv1", "hpzv1", 100, 0, 2*TeV)
+
   hptt1 = ROOT.TH1F("hptt1", "hptt1", 100, 0, 1*TeV)
   hptt2 = ROOT.TH1F("hptt2", "hptt2", 100, 0, 1*TeV)
   hptt3 = ROOT.TH1F("hptt3", "hptt3", 100, 0, 1*TeV)
@@ -55,6 +63,11 @@ def main(infname, outfname):
   hpt_t1_notFromV = ROOT.TH1F("hpt_t1_notFromV", "hpt_t1_notFromV", 100, 0, 1*TeV)
   hpt_t2_notFromV = ROOT.TH1F("hpt_t2_notFromV", "hpt_t2_notFromV", 100, 0, 1*TeV)
 
+  hpz_t1_fromV = ROOT.TH1F("hpz_t1_fromV", "hpz_t1_fromV", 100, 0, 1*TeV)
+  hpz_t2_fromV = ROOT.TH1F("hpz_t2_fromV", "hpz_t2_fromV", 100, 0, 1*TeV)
+  hpz_t1_notFromV = ROOT.TH1F("hpz_t1_notFromV", "hpz_t1_notFromV", 100, 0, 1*TeV)
+  hpz_t2_notFromV = ROOT.TH1F("hpz_t2_notFromV", "hpz_t2_notFromV", 100, 0, 1*TeV)
+
   habseta_t1_fromV = ROOT.TH1F("habseta_t1_fromV", "habseta_t1_fromV", 100, 0, 5)
   habseta_t2_fromV = ROOT.TH1F("habseta_t2_fromV", "habseta_t2_fromV", 100, 0, 5)
   habseta_t1_notFromV = ROOT.TH1F("habseta_t1_notFromV", "habseta_t1_notFromV", 100, 0, 5)
@@ -66,26 +79,47 @@ def main(infname, outfname):
   habseta_t4_notFromV = ROOT.TH1F("habseta_t4_notFromV", "habseta_t4_notFromV", 100, 0, 5)
 
   allHists = \
-    [ hptt1, hptt2, hptt3, hptt4
+    [ hpz_g1, hpz_g2, hmgg
+    , hptv1, hpzv1
+    , hptt1, hptt2, hptt3, hptt4
     , habsetat1, habsetat2 , habsetat3, habsetat4
     , hmtt_centraltops, hmtt_leadingtops, hmtt_fromV 
     , hpt_t1_fromV, hpt_t2_fromV
-    , habseta_t1_fromV, habseta_t2_fromV
     , hpt_t1_notFromV, hpt_t2_notFromV
+    , hpz_t1_fromV, hpz_t2_fromV
+    , hpz_t1_notFromV, hpz_t2_notFromV
+    , habseta_t1_fromV, habseta_t2_fromV
     , habseta_t1_notFromV, habseta_t2_notFromV
     , hpt_t3_notFromV, hpt_t4_notFromV
     , habseta_t3_notFromV, habseta_t4_notFromV
     ]
 
   for evt in pylhe.readLHE(infname):
-    tops = [ t for t in evt.particles if abs(t.id) == 6 ]
+    glus = [ p for p in evt.particles if abs(p.id) == 21 ]
+    v1s = [ p for p in evt.particles if abs(p.id) == 6000055 ]
+    tops = [ p for p in evt.particles if abs(p.id) == 6 ]
 
-    # attach the TLV to the tops
-    for t in tops:
-      t.tlv = ROOT.TLorentzVector(t.px, t.py, t.pz, t.e)
+    # attach the TLV to the particles
+    for p in glus:
+      p.tlv = ROOT.TLorentzVector(p.px, p.py, p.pz, p.e)
+    for p in v1s:
+      p.tlv = ROOT.TLorentzVector(p.px, p.py, p.pz, p.e)
+    for p in tops:
+      p.tlv = ROOT.TLorentzVector(p.px, p.py, p.pz, p.e)
 
     tops.sort(key = lambda t: t.tlv.Pt(), reverse=True)
     wgt = evt.eventinfo.weight
+
+    if len(v1s) == 1:
+      hptv1.Fill(v1s[0].tlv.Pt(), wgt)
+      hpzv1.Fill(abs(v1s[0].tlv.Pz()), wgt)
+
+    if len(glus) == 2:
+      hpz_g1.Fill(abs(glus[0].tlv.Pz()), wgt)
+      hpz_g2.Fill(abs(glus[1].tlv.Pz()), wgt)
+      gg = glus[0].tlv + glus[1].tlv
+      hmgg.Fill(gg.M(), wgt)
+      hpzgg.Fill(gg.Pz(), wgt)
 
     if len(tops) != 4:
       print "woops!"
@@ -112,6 +146,8 @@ def main(infname, outfname):
     if len(topsFromV) == 2:
       hpt_t1_fromV.Fill(topsFromV[0].tlv.Pt(), wgt)
       hpt_t2_fromV.Fill(topsFromV[1].tlv.Pt(), wgt)
+      hpz_t1_fromV.Fill(topsFromV[0].tlv.Pz(), wgt)
+      hpz_t2_fromV.Fill(topsFromV[1].tlv.Pz(), wgt)
       habseta_t1_fromV.Fill(abs(topsFromV[0].tlv.Eta()), wgt)
       habseta_t2_fromV.Fill(abs(topsFromV[1].tlv.Eta()), wgt)
       hmtt_fromV.Fill(
@@ -120,6 +156,8 @@ def main(infname, outfname):
     if len(topsNotFromV) >= 2:
       hpt_t1_notFromV.Fill(topsNotFromV[0].tlv.Pt(), wgt)
       hpt_t2_notFromV.Fill(topsNotFromV[1].tlv.Pt(), wgt)
+      hpz_t1_notFromV.Fill(topsNotFromV[0].tlv.Pz(), wgt)
+      hpz_t2_notFromV.Fill(topsNotFromV[1].tlv.Pz(), wgt)
       habseta_t1_notFromV.Fill(abs(topsNotFromV[0].tlv.Eta()), wgt)
       habseta_t2_notFromV.Fill(abs(topsNotFromV[1].tlv.Eta()), wgt)
 
