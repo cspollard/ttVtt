@@ -332,7 +332,7 @@ namespace Rivet {
 
         Jets goodtopjets;
         goodtopjets.push_back(topjets[0]);
-        ntopbjets_lJJ->fill(btaggedJets(goodtopjets).size(), weight);
+        ntopbjets_ssJ->fill(btaggedJets(goodtopjets).size(), weight);
 
         Jets goodjets = additionalJets(jets, goodtopjets);
         naddjets_ssJ->fill(goodjets.size(), weight);
