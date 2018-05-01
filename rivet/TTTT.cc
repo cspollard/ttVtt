@@ -63,15 +63,20 @@ namespace Rivet {
 
       njets = bookH("njets", 21, -0.5, 20.5, "njets", "jet multiplicity", dsigdy(nstr, "1"));
       ncentjets = bookH("ncentjets", 21, -0.5, 20.5, "ncentjets", "central jet multiplicity", dsigdy(nstr, "1"));
+      nbjets = bookH("nbjets", 21, -0.5, 20.5, "nbjets", "$b$-jet multiplicity", dsigdy(nstr, "1"));
       nfwdjets = bookH("nfwdjets", 11, -0.5, 10.5, "nfwdjets", "forward jet multiplicity", dsigdy(nstr, "1"));
-      nfatjets = bookH("nfatjets", 4, -0.5, 3.5, "nfatjets", "large-$R$ jet multiplicity", dsigdy(nstr, "1"));
+      ntopjets = bookH("ntopjets", 4, -0.5, 3.5, "ntopjets", "top-tagged jet multiplicity", dsigdy(nstr, "1"));
+      ntopbjets = bookH("ntopbjets", 4, -0.5, 3.5, "ntopbjets", "$b$ + top-tagged jet multiplicity", dsigdy(nstr, "1"));
       nleps = bookH("nleps", 5, -0.5, 4.5, "nleps", "prompt lepton multiplicity", dsigdy(nstr, "1"));
 
       njets_JJ = bookH("njets_JJ", 21, -0.5, 20.5, "njets_JJ", "jet multiplicity", dsigdy(nstr, "1"));
       ncentjets_JJ = bookH("ncentjets_JJ", 21, -0.5, 20.5, "ncentjets_JJ", "central jet multiplicity", dsigdy(nstr, "1"));
       nfwdjets_JJ = bookH("nfwdjets_JJ", 11, -0.5, 10.5, "nfwdjets_JJ", "forward jet multiplicity", dsigdy(nstr, "1"));
       naddjets_JJ = bookH("naddjets_JJ", 21, -0.5, 20.5, "naddjets_JJ", "additional jet multiplicity", dsigdy(nstr, "1"));
-      nfatjets_JJ = bookH("nfatjets_JJ", 4, -0.5, 3.5, "nfatjets_JJ", "large-$R$ jet multiplicity", dsigdy(nstr, "1"));
+      ntopjets_JJ = bookH("ntopjets_JJ", 4, -0.5, 3.5, "ntopjets_JJ", "top-tagged jet multiplicity", dsigdy(nstr, "1"));
+      naddbjets_JJ = bookH("naddbjets_JJ", 21, -0.5, 20.5, "naddbjets_JJ", "additional $b$-jet multiplicity", dsigdy(nstr, "1"));
+      naddljets_JJ = bookH("naddljets_JJ", 21, -0.5, 20.5, "naddljets_JJ", "additional light-jet multiplicity", dsigdy(nstr, "1"));
+      ntopbjets_JJ = bookH("ntopbjets_JJ", 4, -0.5, 3.5, "ntopbjets_JJ", "$b$ + top-tagged jet multiplicity", dsigdy(nstr, "1"));
 
       ptth1_JJ = bookH("ptth1_JJ", 25, 0, 2, "ptth1_JJ", "leading hadronic top $p_\\mathrm{T}$ [TeV]", dsigdy(ptstr, "\\mathrm{TeV}"));
       ptth2_JJ = bookH("ptth2_JJ", 25, 0, 2, "ptth2_JJ", "subleading top $p_\\mathrm{T}$ [TeV]", dsigdy(ptstr, "\\mathrm{TeV}"));
@@ -85,7 +90,10 @@ namespace Rivet {
       ncentjets_lJ = bookH("ncentjets_lJ", 21, -0.5, 20.5, "ncentjets_lJ", "central jet multiplicity", dsigdy(nstr, "1"));
       nfwdjets_lJ = bookH("nfwdjets_lJ", 11, -0.5, 10.5, "nfwdjets_lJ", "forward jet multiplicity", dsigdy(nstr, "1"));
       naddjets_lJ = bookH("naddjets_lJ", 21, -0.5, 20.5, "naddjets_lJ", "additional jet multiplicity", dsigdy(nstr, "1"));
-      nfatjets_lJ = bookH("nfatjets_lJ", 4, -0.5, 3.5, "nfatjets_lJ", "large-$R$ jet multiplicity", dsigdy(nstr, "1"));
+      ntopjets_lJ = bookH("ntopjets_lJ", 4, -0.5, 3.5, "ntopjets_lJ", "top-tagged jet multiplicity", dsigdy(nstr, "1"));
+      naddbjets_lJ = bookH("naddbjets_lJ", 21, -0.5, 20.5, "naddbjets_lJ", "additional $b$-jet multiplicity", dsigdy(nstr, "1"));
+      naddljets_lJ = bookH("naddljets_lJ", 21, -0.5, 20.5, "naddljets_lJ", "additional light-jet multiplicity", dsigdy(nstr, "1"));
+      ntopbjets_lJ = bookH("ntopbjets_lJ", 4, -0.5, 3.5, "ntopbjets_lJ", "$b$ + top-tagged jet multiplicity", dsigdy(nstr, "1"));
 
       ptth_lJ = bookH("ptth_lJ", 25, 0, 2, "ptth_lJ", "hadronic top $p_\\mathrm{T}$ [TeV]", dsigdy(ptstr, "\\mathrm{TeV}"));
       pttl_lJ = bookH("pttl_lJ", 25, 0, 2, "pttl_lJ", "leptonic top $p_\\mathrm{T}$ [TeV]", dsigdy(ptstr, "\\mathrm{TeV}"));
@@ -100,7 +108,10 @@ namespace Rivet {
       ncentjets_lJJ = bookH("ncentjets_lJJ", 21, -0.5, 20.5, "ncentjets_lJJ", "central jet multiplicity", dsigdy(nstr, "1"));
       nfwdjets_lJJ = bookH("nfwdjets_lJJ", 11, -0.5, 10.5, "nfwdjets_lJJ", "forward jet multiplicity", dsigdy(nstr, "1"));
       naddjets_lJJ = bookH("naddjets_lJJ", 21, -0.5, 20.5, "naddjets_lJJ", "additional jet multiplicity", dsigdy(nstr, "1"));
-      nfatjets_lJJ = bookH("nfatjets_lJJ", 4, -0.5, 3.5, "nfatjets_lJJ", "large-$R$ jet multiplicity", dsigdy(nstr, "1"));
+      ntopjets_lJJ = bookH("ntopjets_lJJ", 4, -0.5, 3.5, "ntopjets_lJJ", "top-tagged jet multiplicity", dsigdy(nstr, "1"));
+      naddbjets_lJJ = bookH("naddbjets_lJJ", 21, -0.5, 20.5, "naddbjets_lJJ", "additional $b$-jet multiplicity", dsigdy(nstr, "1"));
+      naddljets_lJJ = bookH("naddljets_lJJ", 21, -0.5, 20.5, "naddljets_lJJ", "additional light-jet multiplicity", dsigdy(nstr, "1"));
+      ntopbjets_lJJ = bookH("ntopbjets_lJJ", 4, -0.5, 3.5, "ntopbjets_lJJ", "$b$ + top-tagged jet multiplicity", dsigdy(nstr, "1"));
 
       ptl1_lJJ = bookH("ptl1_lJJ", 25, 0, 1e3, "ptl1_lJJ", "leading lepton $p_\\mathrm{T}$ [GeV]", dsigdy(ptstr, "\\mathrm{GeV}"));
       ptth1_lJJ = bookH("ptth1_lJJ", 25, 0, 2, "ptth1_lJJ", "leading hadronic top $p_\\mathrm{T}$ [TeV]", dsigdy(ptstr, "\\mathrm{TeV}"));
@@ -115,7 +126,10 @@ namespace Rivet {
       ncentjets_ssJ = bookH("ncentjets_ssJ", 21, -0.5, 20.5, "ncentjets_ssJ", "central jet multiplicity", dsigdy(nstr, "1"));
       nfwdjets_ssJ = bookH("nfwdjets_ssJ", 11, -0.5, 10.5, "nfwdjets_ssJ", "forward jet multiplicity", dsigdy(nstr, "1"));
       naddjets_ssJ = bookH("naddjets_lJ", 21, -0.5, 20.5, "naddjets_lJ", "additional jet multiplicity", dsigdy(nstr, "1"));
-      nfatjets_ssJ = bookH("nfatjets_ssJ", 4, -0.5, 3.5, "nfatjets_ssJ", "large-$R$ jet multiplicity", dsigdy(nstr, "1"));
+      ntopjets_ssJ = bookH("ntopjets_ssJ", 4, -0.5, 3.5, "ntopjets_ssJ", "top-tagged jet multiplicity", dsigdy(nstr, "1"));
+      naddbjets_ssJ = bookH("naddbjets_ssJ", 21, -0.5, 20.5, "naddbjets_ssJ", "additional $b$-jet multiplicity", dsigdy(nstr, "1"));
+      naddljets_ssJ = bookH("naddljets_ssJ", 21, -0.5, 20.5, "naddljets_ssJ", "additional light-jet multiplicity", dsigdy(nstr, "1"));
+      ntopbjets_ssJ = bookH("ntopbjets_ssJ", 4, -0.5, 3.5, "ntopbjets_ssJ", "$b$ + top-tagged jet multiplicity", dsigdy(nstr, "1"));
 
       ptth_ssJ = bookH("ptth_ssJ", 25, 0, 2, "ptth_ssJ", "hadronic top $p_\\mathrm{T}$ [TeV]", dsigdy(ptstr, "\\mathrm{TeV}"));
       pttl_ssJ = bookH("pttl_ssJ", 25, 0, 2, "pttl_ssJ", "leptonic top $p_\\mathrm{T}$ [TeV]", dsigdy(ptstr, "\\mathrm{TeV}"));
@@ -136,14 +150,14 @@ namespace Rivet {
       return h;
     }
 
-    vector<const Jet*> additionalJets(const Jets& jets, const Jets& fatjets) {
-      vector<const Jet*> addjets;
+    Jets additionalJets(const Jets& jets, const Jets& topjets) {
+      Jets addjets;
 
       for (const Jet& j : jets) {
         const FourMomentum mom = j.mom();
         bool pass = true;
 
-        for (const Jet& fj : fatjets) {
+        for (const Jet& fj : topjets) {
           if (deltaR(fj.mom(), mom) > 1.2)
             continue;
 
@@ -152,10 +166,21 @@ namespace Rivet {
         }
 
         if (pass)
-          addjets.push_back(&j);
+          addjets.push_back(j);
       }
 
       return addjets;
+    }
+
+    Jets btaggedJets(const Jets& jets) {
+      Jets bjets;
+      for (const Jet& j : jets) {
+        // only can tag b-hadrons in the tracker fiducial volume.
+        if (j.bTagged(Cuts::pT > 5*GeV && Cuts::abseta < 2.5))
+          bjets.push_back(j);
+      }
+
+      return bjets;
     }
 
 
@@ -168,37 +193,44 @@ namespace Rivet {
         apply<FastJets>(event, "Jets").jetsByPt(Cuts::pT > 25*GeV && Cuts::abseta < 2.5);
       const Jets& fwdjets =
         apply<FastJets>(event, "Jets").jetsByPt(Cuts::pT > 25*GeV && Cuts::abseta > 2.5);
-      const Jets& fatjets =
+      const Jets& topjets =
         apply<FastJets>(event, "FatJets").jetsByPt(Cuts::pT > 300*GeV && Cuts::abseta < 2.0 && Cuts::mass > 100*GeV);
 
       double weight = event.weight();
 
       nleps->fill(leps.size(), weight);
       njets->fill(jets.size(), weight);
+      nbjets->fill(btaggedJets(jets).size(), weight);
       ncentjets->fill(centjets.size(), weight);
       nfwdjets->fill(fwdjets.size(), weight);
-      nfatjets->fill(fatjets.size(), weight);
+      ntopjets->fill(topjets.size(), weight);
+      ntopbjets->fill(btaggedJets(topjets).size(), weight);
 
 
-      if (leps.size() == 0 && fatjets.size() >= 2) {
+      if (leps.size() == 0 && topjets.size() >= 2) {
         njets_JJ->fill(jets.size(), weight);
         ncentjets_JJ->fill(centjets.size(), weight);
         nfwdjets_JJ->fill(fwdjets.size(), weight);
-        nfatjets_JJ->fill(fatjets.size(), weight);
+        ntopjets_JJ->fill(topjets.size(), weight);
 
-        ptth1_JJ->fill(fatjets[0].pt()/TeV, weight);
-        ptth2_JJ->fill(fatjets[1].pt()/TeV, weight);
-        mth1_JJ->fill(fatjets[0].mass()/GeV, weight);
-        mth2_JJ->fill(fatjets[1].mass()/GeV, weight);
+        ptth1_JJ->fill(topjets[0].pt()/TeV, weight);
+        ptth2_JJ->fill(topjets[1].pt()/TeV, weight);
+        mth1_JJ->fill(topjets[0].mass()/GeV, weight);
+        mth2_JJ->fill(topjets[1].mass()/GeV, weight);
 
-        Jets goodfatjets;
-        goodfatjets.push_back(fatjets[0]);
-        goodfatjets.push_back(fatjets[1]);
-        vector<const Jet*> goodjets = additionalJets(jets, goodfatjets);
+        Jets goodtopjets;
+        goodtopjets.push_back(topjets[0]);
+        goodtopjets.push_back(topjets[1]);
+        ntopbjets_JJ->fill(btaggedJets(goodtopjets).size(), weight);
+
+        Jets goodjets = additionalJets(jets, goodtopjets);
         naddjets_JJ->fill(goodjets.size(), weight);
+        Jets goodbjets = btaggedJets(goodjets);
+        naddbjets_JJ->fill(goodbjets.size(), weight);
+        naddljets_JJ->fill(goodjets.size()-goodbjets.size(), weight);
 
-        FourMomentum t1 = goodfatjets[0].mom();
-        FourMomentum t2 = goodfatjets[1].mom();
+        FourMomentum t1 = goodtopjets[0].mom();
+        FourMomentum t2 = goodtopjets[1].mom();
         FourMomentum tt = t1 + t2;
 
         mth1_JJ->fill(t1.mass()/GeV, weight);
@@ -209,23 +241,29 @@ namespace Rivet {
         pttt_JJ->fill(tt.pt()/TeV, weight);
         mtt_JJ->fill(tt.mass()/TeV, weight);
 
-      } if (leps.size() == 1 && fatjets.size() == 1) {
+      } if (leps.size() == 1 && topjets.size() == 1) {
         njets_lJ->fill(jets.size(), weight);
         ncentjets_lJ->fill(centjets.size(), weight);
         nfwdjets_lJ->fill(fwdjets.size(), weight);
-        nfatjets_lJ->fill(fatjets.size(), weight);
+        ntopjets_lJ->fill(topjets.size(), weight);
         ptl1_lJ->fill(leps[0].pt()/GeV, weight);
 
-        Jets goodfatjets = fatjets;
-        vector<const Jet*> goodjets = additionalJets(jets, goodfatjets);
+        Jets goodtopjets = topjets;
+        ntopbjets_lJ->fill(btaggedJets(goodtopjets).size(), weight);
+
+        Jets goodjets = additionalJets(jets, goodtopjets);
         naddjets_lJ->fill(goodjets.size(), weight);
+
+        Jets goodbjets = btaggedJets(goodjets);
+        naddbjets_lJ->fill(goodbjets.size(), weight);
+        naddljets_lJ->fill(goodjets.size()-goodbjets.size(), weight);
 
         const Jet* bestjet = NULL;
         double drmin = -1;
-        for (const Jet* j : goodjets) {
-          double dr = deltaR(leps[0].mom(), j->mom());
+        for (const Jet& j : goodbjets) {
+          double dr = deltaR(leps[0].mom(), j.mom());
           if (drmin < 0 || dr < drmin) {
-            bestjet = j;
+            bestjet = &j;
             drmin = dr;
           }
         }
@@ -233,7 +271,7 @@ namespace Rivet {
         if (drmin >= 0) {
           // colinear approximation
           FourMomentum tl = leps[0].mom() + leps[0].mom() + bestjet->mom();
-          FourMomentum th = goodfatjets[0].mom();
+          FourMomentum th = goodtopjets[0].mom();
           FourMomentum tt = tl + th;
 
           ptth_lJ->fill(th.pt()/TeV, weight);
@@ -248,26 +286,32 @@ namespace Rivet {
           mtt_lJ->fill(tt.mass()/TeV, weight);
         }
 
-      } else if (leps.size() == 1 && fatjets.size() >= 2) {
+      } else if (leps.size() == 1 && topjets.size() >= 2) {
         njets_lJJ->fill(jets.size(), weight);
         ncentjets_lJJ->fill(centjets.size(), weight);
         nfwdjets_lJJ->fill(fwdjets.size(), weight);
-        nfatjets_lJJ->fill(fatjets.size(), weight);
+        ntopjets_lJJ->fill(topjets.size(), weight);
 
-        ptth1_lJJ->fill(fatjets[0].pt()/TeV, weight);
-        ptth2_lJJ->fill(fatjets[1].pt()/TeV, weight);
-        mth1_lJJ->fill(fatjets[0].mass()/GeV, weight);
-        mth2_lJJ->fill(fatjets[1].mass()/GeV, weight);
+        ptth1_lJJ->fill(topjets[0].pt()/TeV, weight);
+        ptth2_lJJ->fill(topjets[1].pt()/TeV, weight);
+        mth1_lJJ->fill(topjets[0].mass()/GeV, weight);
+        mth2_lJJ->fill(topjets[1].mass()/GeV, weight);
         ptl1_lJJ->fill(leps[0].pt()/GeV, weight);
 
-        Jets goodfatjets;
-        goodfatjets.push_back(fatjets[0]);
-        goodfatjets.push_back(fatjets[1]);
-        vector<const Jet*> goodjets = additionalJets(jets, goodfatjets);
+        Jets goodtopjets;
+        goodtopjets.push_back(topjets[0]);
+        goodtopjets.push_back(topjets[1]);
+        ntopbjets_lJJ->fill(btaggedJets(goodtopjets).size(), weight);
+
+        Jets goodjets = additionalJets(jets, goodtopjets);
         naddjets_lJJ->fill(goodjets.size(), weight);
 
-        FourMomentum t1 = goodfatjets[0].mom();
-        FourMomentum t2 = goodfatjets[1].mom();
+        Jets goodbjets = btaggedJets(goodjets);
+        naddbjets_lJJ->fill(goodbjets.size(), weight);
+        naddljets_lJJ->fill(goodjets.size()-goodbjets.size(), weight);
+
+        FourMomentum t1 = goodtopjets[0].mom();
+        FourMomentum t2 = goodtopjets[1].mom();
         FourMomentum tt = t1 + t2;
 
         mth1_lJJ->fill(t1.mass()/GeV, weight);
@@ -278,25 +322,31 @@ namespace Rivet {
         pttt_lJJ->fill(tt.pt()/TeV, weight);
         mtt_lJJ->fill(tt.mass()/TeV, weight);
 
-      } else if (leps.size() == 2 && fatjets.size() >= 1 && leps[0].threeCharge()*leps[1].threeCharge() > 0 ) {
+      } else if (leps.size() == 2 && topjets.size() >= 1 && leps[0].threeCharge()*leps[1].threeCharge() > 0 ) {
         njets_ssJ->fill(jets.size(), weight);
         ncentjets_ssJ->fill(centjets.size(), weight);
         nfwdjets_ssJ->fill(fwdjets.size(), weight);
-        nfatjets_ssJ->fill(fatjets.size(), weight);
+        ntopjets_ssJ->fill(topjets.size(), weight);
         ptl1_ssJ->fill(leps[0].pt()/GeV, weight);
         ptl2_ssJ->fill(leps[1].pt()/GeV, weight);
 
-        Jets goodfatjets;
-        goodfatjets.push_back(fatjets[0]);
-        vector<const Jet*> goodjets = additionalJets(jets, goodfatjets);
+        Jets goodtopjets;
+        goodtopjets.push_back(topjets[0]);
+        ntopbjets_lJJ->fill(btaggedJets(goodtopjets).size(), weight);
+
+        Jets goodjets = additionalJets(jets, goodtopjets);
         naddjets_ssJ->fill(goodjets.size(), weight);
+
+        Jets goodbjets = btaggedJets(goodjets);
+        naddbjets_ssJ->fill(goodbjets.size(), weight);
+        naddljets_ssJ->fill(goodjets.size()-goodbjets.size(), weight);
 
         const Jet* bestjet = NULL;
         double drmin = -1;
-        for (const Jet* j : goodjets) {
-          double dr = deltaR(leps[0].mom(), j->mom());
+        for (const Jet& j : goodbjets) {
+          double dr = deltaR(leps[0].mom(), j.mom());
           if (drmin < 0 || dr < drmin) {
-            bestjet = j;
+            bestjet = &j;
             drmin = dr;
           }
         }
@@ -304,7 +354,7 @@ namespace Rivet {
         if (drmin >= 0) {
           // colinear approximation
           FourMomentum tl = leps[0].mom() + leps[0].mom() + bestjet->mom();
-          FourMomentum th = goodfatjets[0].mom();
+          FourMomentum th = goodtopjets[0].mom();
           FourMomentum tt = tl + th;
 
           pttl_ssJ->fill(tl.pt()/TeV, weight);
@@ -349,16 +399,21 @@ namespace Rivet {
     /// @name Histograms
     //@{
     Histo1DPtr njets;
+    Histo1DPtr nbjets;
     Histo1DPtr ncentjets;
     Histo1DPtr nfwdjets;
-    Histo1DPtr nfatjets;
+    Histo1DPtr ntopjets;
+    Histo1DPtr ntopbjets;
     Histo1DPtr nleps;
 
     Histo1DPtr njets_JJ;
     Histo1DPtr ncentjets_JJ;
     Histo1DPtr nfwdjets_JJ;
     Histo1DPtr naddjets_JJ;
-    Histo1DPtr nfatjets_JJ;
+    Histo1DPtr naddbjets_JJ;
+    Histo1DPtr naddljets_JJ;
+    Histo1DPtr ntopjets_JJ;
+    Histo1DPtr ntopbjets_JJ;
 
     Histo1DPtr ptth1_JJ;
     Histo1DPtr ptth2_JJ;
@@ -372,7 +427,10 @@ namespace Rivet {
     Histo1DPtr ncentjets_lJ;
     Histo1DPtr nfwdjets_lJ;
     Histo1DPtr naddjets_lJ;
-    Histo1DPtr nfatjets_lJ;
+    Histo1DPtr naddbjets_lJ;
+    Histo1DPtr naddljets_lJ;
+    Histo1DPtr ntopjets_lJ;
+    Histo1DPtr ntopbjets_lJ;
 
     Histo1DPtr ptth_lJ;
     Histo1DPtr pttl_lJ;
@@ -387,7 +445,10 @@ namespace Rivet {
     Histo1DPtr ncentjets_lJJ;
     Histo1DPtr nfwdjets_lJJ;
     Histo1DPtr naddjets_lJJ;
-    Histo1DPtr nfatjets_lJJ;
+    Histo1DPtr naddbjets_lJJ;
+    Histo1DPtr naddljets_lJJ;
+    Histo1DPtr ntopjets_lJJ;
+    Histo1DPtr ntopbjets_lJJ;
 
     Histo1DPtr ptth1_lJJ;
     Histo1DPtr ptth2_lJJ;
@@ -402,7 +463,10 @@ namespace Rivet {
     Histo1DPtr ncentjets_ssJ;
     Histo1DPtr nfwdjets_ssJ;
     Histo1DPtr naddjets_ssJ;
-    Histo1DPtr nfatjets_ssJ;
+    Histo1DPtr naddbjets_ssJ;
+    Histo1DPtr naddljets_ssJ;
+    Histo1DPtr ntopjets_ssJ;
+    Histo1DPtr ntopbjets_ssJ;
 
     Histo1DPtr ptth_ssJ;
     Histo1DPtr pttl_ssJ;
