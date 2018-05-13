@@ -1,0 +1,3 @@
+# BEGIN PLOT /HadTop/*
+LogY=0
+# END PLOT

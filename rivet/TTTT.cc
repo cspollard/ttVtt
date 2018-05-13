@@ -5,6 +5,7 @@
 #include "Rivet/Projections/ChargedLeptons.hh"
 #include "Rivet/Projections/FastJets.hh"
 #include "Rivet/Projections/VetoedFinalState.hh"
+#include "YODA/ReaderYODA.h"
 
 namespace Rivet {
 
@@ -21,6 +22,7 @@ namespace Rivet {
 
   const string ptstr = "\\ensuremath{p_\\mathrm{T}}";
   const string chi2str = "\\ensuremath{\\chi^2}";
+  const string logttprobstr = "\\ensuremath{log(\\text{Prob}(tt)})";
   const string ptttstr = "\\ensuremath{p_\\mathrm{T}(tt)}";
   const string mttstr = "\\ensuremath{m_{tt}}";
   const string mstr = "\\ensuremath{m}";
@@ -38,6 +40,15 @@ namespace Rivet {
   bool cmp_pt(const Jet& j1, const Jet& j2) {
     return j1.pt() > j2.pt();
   }
+
+  template<class T>
+  pair<vector<T>, vector<T>> splitAt(const vector<T>& v, size_t n) {
+    if (v.size() < n)
+      return make_pair(v, vector<T>());
+    else
+      return make_pair(vector<T>(v.begin(), v.begin()+n), vector<T>(v.begin()+n, v.end()));
+  }
+
 
   double mw = 80.51*GeV;
   double mt_mw = 85.17*GeV;
@@ -83,11 +94,112 @@ namespace Rivet {
       count++;
     } while (next_permutation(js.begin(), js.end(), cmp_pt));
 
-    cout << "njets: " << jets.size() << endl;
-    cout << "attempted jet combinations: " << count << endl;
-    cout << "minchi2: " << minchi2 << endl;
-
     return minchi2;
+  }
+
+  double topProb(const Histo2D& topPDF0b, const Histo2D& topPDF1b, const Jets& jets) {
+    size_t nj = jets.size();
+    if (nj != 2 && nj != 3)
+      return 0.0;
+
+    size_t nb = 0;
+    FourMomentum alljets;
+    for (const Jet& jet : jets) {
+      if (jet.bTagged(Cuts::pT > 5*GeV && Cuts::abseta < 2.5))
+        nb++;
+
+      alljets += jet.mom();
+    }
+
+    double mass = alljets.mass();
+    if (mass > 400)
+      return 0.0;
+
+    // cout << "mass: " << mass << endl;
+    // cout << "njets: " << nj << endl;
+    // cout << "nbjets: " << nb << endl;
+
+    if (nb)
+      return topPDF1b.binAt(alljets.mass(), nj + 0.1).volume();
+    else
+      return topPDF0b.binAt(alljets.mass(), nj + 0.1).volume();
+  }
+
+  double ttProb(const Histo2D& topPDF0b, const Histo2D& topPDF1b, const Jets& jets) {
+    size_t nj = jets.size();
+
+    if (nj < 4)
+      return 0.0;
+
+    // only look at the first 8 jets for now.
+    Jets js;
+    for (size_t i = 0; i < jets.size() && i < 8; i++)
+      js.push_back(jets[i]);
+
+    double bestprob = 0.0;
+    do {
+      double prob;
+      pair<Jets, Jets> top1_rest;
+      pair<Jets, Jets> top2_rest;
+ 
+        
+      top1_rest = splitAt(js, 2);
+      top2_rest = splitAt(top1_rest.second, 2);
+
+      // cout << "top1 length: " << top1_rest.first.size() << endl;
+      // cout << "top2 length: " << top2_rest.first.size() << endl;
+
+      prob = topProb(topPDF0b, topPDF1b, top1_rest.first) * topProb(topPDF0b, topPDF1b, top2_rest.first);
+
+      if (prob > bestprob)
+        bestprob = prob;
+
+
+      if (nj < 5)
+        continue;
+
+      top1_rest = splitAt(js, 2);
+      top2_rest = splitAt(top1_rest.second, 3);
+
+      // cout << "top1 length: " << top1_rest.first.size() << endl;
+      // cout << "top2 length: " << top2_rest.first.size() << endl;
+
+      prob = topProb(topPDF0b, topPDF1b, top1_rest.first) * topProb(topPDF0b, topPDF1b, top2_rest.first);
+
+      if (prob > bestprob)
+        bestprob = prob;
+
+
+      top1_rest = splitAt(js, 3);
+      top2_rest = splitAt(top1_rest.second, 2);
+
+      // cout << "top1 length: " << top1_rest.first.size() << endl;
+      // cout << "top2 length: " << top2_rest.first.size() << endl;
+
+      prob = topProb(topPDF0b, topPDF1b, top1_rest.first) * topProb(topPDF0b, topPDF1b, top2_rest.first);
+
+      if (prob > bestprob)
+        bestprob = prob;
+
+
+      if (nj < 6)
+        continue;
+
+      top1_rest = splitAt(js, 3);
+      top2_rest = splitAt(top1_rest.second, 3);
+
+      // cout << "top1 length: " << top1_rest.first.size() << endl;
+      // cout << "top2 length: " << top2_rest.first.size() << endl;
+
+      prob = topProb(topPDF0b, topPDF1b, top1_rest.first) * topProb(topPDF0b, topPDF1b, top2_rest.first);
+
+      if (prob > bestprob)
+        bestprob = prob;
+
+    } while (next_permutation(js.begin(), js.end(), cmp_pt));
+
+    cout << "bestprob: " << bestprob << endl;
+    return bestprob;
   }
 
 
@@ -104,6 +216,26 @@ namespace Rivet {
 
     /// Book histograms and initialise projections before the run
     void init() {
+
+      // read in control histograms for top tagging
+
+      YODA::Reader& r = YODA::ReaderYODA::create();
+
+      vector<AnalysisObject*> inputHists = r.read("toptemplate.yoda");
+
+      for (AnalysisObject* aoptr : inputHists) {
+        if (aoptr->path() == "/HadTop/ttPDF0b") {
+          topPDF0b = * ((Histo2D*) aoptr);
+          cout << "found /HadTop/ttPDF0b" << endl;
+        } else if (aoptr->path() == "/HadTop/ttPDF1b") {
+          topPDF1b = * ((Histo2D*) aoptr);
+          cout << "found /HadTop/ttPDF1b" << endl;
+        }
+
+        // clean up after ourselves.
+        delete aoptr;
+        continue;
+      }
 
       // Initialise and register projections
       PromptFinalState pls(ChargedLeptons(Cuts::abseta < 2.5 && Cuts::pT > 25*GeV), true);
@@ -143,6 +275,7 @@ namespace Rivet {
       pttt_JJ = bookH("pttt_JJ", 25, 0, 1, "pttt_JJ", ptttstr + " [TeV]", dsigdy(ptttstr, "\\mathrm{TeV}"));
       mtt_JJ = bookH("mtt_JJ", 15, 0, 3, "mtt_JJ", "$tt$ invariant mass [TeV]", dsigdy(mttstr, "\\mathrm{TeV}"));
       chi2_JJ = bookH("chi2_JJ", 20, 0, 1000, "chi2_JJ", chi2str, dsigdy(chi2str, "1"));
+      logttprob_JJ = bookH("logttprob_JJ", 20, -10, 0, "logttprob_JJ", logttprobstr, dsigdy(logttprobstr, "1"));
 
       njets_lJ = bookH("njets_lJ", 21, -0.5, 20.5, "njets_lJ", "jet multiplicity", dsigdy(nstr, "1"));
       ncentjets_lJ = bookH("ncentjets_lJ", 21, -0.5, 20.5, "ncentjets_lJ", "central jet multiplicity", dsigdy(nstr, "1"));
@@ -162,6 +295,7 @@ namespace Rivet {
       pttt_lJ = bookH("pttt_lJ", 25, 0, 1, "pttt_lJ", ptttstr + " [TeV]", dsigdy(ptttstr, "\\mathrm{TeV}"));
       mtt_lJ = bookH("mtt_lJ", 15, 0, 3, "mtt_lJ", "$tt$ invariant mass [TeV]", dsigdy(mttstr, "\\mathrm{TeV}"));
       chi2_lJ = bookH("chi2_lJ", 20, 0, 1000, "chi2_lJ", chi2str, dsigdy(chi2str, "1"));
+      logttprob_lJ = bookH("logttprob_lJ", 20, -10, 0, "logttprob_lJ", logttprobstr, dsigdy(logttprobstr, "1"));
 
       njets_lJJ = bookH("njets_lJJ", 21, -0.5, 20.5, "njets_lJJ", "jet multiplicity", dsigdy(nstr, "1"));
       ncentjets_lJJ = bookH("ncentjets_lJJ", 21, -0.5, 20.5, "ncentjets_lJJ", "central jet multiplicity", dsigdy(nstr, "1"));
@@ -308,6 +442,7 @@ namespace Rivet {
         pttt_JJ->fill(tt.pt()/TeV, weight);
         mtt_JJ->fill(tt.mass()/TeV, weight);
         chi2_JJ->fill(chi2_hadhad(addjets), weight);
+        logttprob_JJ->fill(log(ttProb(topPDF0b, topPDF1b, addjets)), weight);
 
       } if (leps.size() == 1 && topjets.size() == 1) {
         njets_lJ->fill(jets.size(), weight);
@@ -372,6 +507,7 @@ namespace Rivet {
           mtt_lJ->fill(tt.mass()/TeV, weight);
 
           chi2_lJ->fill(chi2_hadhad(addjets), weight);
+          logttprob_lJ->fill(log(ttProb(topPDF0b, topPDF1b, addjets)), weight);
         }
 
       } else if (leps.size() == 1 && topjets.size() >= 2) {
@@ -511,6 +647,7 @@ namespace Rivet {
     Histo1DPtr pttt_JJ;
     Histo1DPtr mtt_JJ;
     Histo1DPtr chi2_JJ;
+    Histo1DPtr logttprob_JJ;
 
     Histo1DPtr njets_lJ;
     Histo1DPtr ncentjets_lJ;
@@ -530,6 +667,7 @@ namespace Rivet {
     Histo1DPtr pttt_lJ;
     Histo1DPtr mtt_lJ;
     Histo1DPtr chi2_lJ;
+    Histo1DPtr logttprob_lJ;
 
     Histo1DPtr njets_lJJ;
     Histo1DPtr ncentjets_lJJ;
@@ -569,6 +707,9 @@ namespace Rivet {
     Histo1DPtr mtt_ssJ;
 
     vector<Histo1DPtr> allHists;
+
+    Histo2D topPDF0b;
+    Histo2D topPDF1b;
     //@}
 
 
