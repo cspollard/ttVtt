@@ -275,7 +275,7 @@ namespace Rivet {
       pttt_JJ = bookH("pttt_JJ", 25, 0, 1, "pttt_JJ", ptttstr + " [TeV]", dsigdy(ptttstr, "\\mathrm{TeV}"));
       mtt_JJ = bookH("mtt_JJ", 15, 0, 3, "mtt_JJ", "$tt$ invariant mass [TeV]", dsigdy(mttstr, "\\mathrm{TeV}"));
       chi2_JJ = bookH("chi2_JJ", 20, 0, 1000, "chi2_JJ", chi2str, dsigdy(chi2str, "1"));
-      logttprob_JJ = bookH("logttprob_JJ", 20, -10, 0, "logttprob_JJ", logttprobstr, dsigdy(logttprobstr, "1"));
+      logttprob_JJ = bookH("logttprob_JJ", 20, -20, 0, "logttprob_JJ", logttprobstr, dsigdy(logttprobstr, "1"));
 
       njets_lJ = bookH("njets_lJ", 21, -0.5, 20.5, "njets_lJ", "jet multiplicity", dsigdy(nstr, "1"));
       ncentjets_lJ = bookH("ncentjets_lJ", 21, -0.5, 20.5, "ncentjets_lJ", "central jet multiplicity", dsigdy(nstr, "1"));
@@ -295,7 +295,7 @@ namespace Rivet {
       pttt_lJ = bookH("pttt_lJ", 25, 0, 1, "pttt_lJ", ptttstr + " [TeV]", dsigdy(ptttstr, "\\mathrm{TeV}"));
       mtt_lJ = bookH("mtt_lJ", 15, 0, 3, "mtt_lJ", "$tt$ invariant mass [TeV]", dsigdy(mttstr, "\\mathrm{TeV}"));
       chi2_lJ = bookH("chi2_lJ", 20, 0, 1000, "chi2_lJ", chi2str, dsigdy(chi2str, "1"));
-      logttprob_lJ = bookH("logttprob_lJ", 20, -10, 0, "logttprob_lJ", logttprobstr, dsigdy(logttprobstr, "1"));
+      logttprob_lJ = bookH("logttprob_lJ", 20, -20, 0, "logttprob_lJ", logttprobstr, dsigdy(logttprobstr, "1"));
 
       njets_lJJ = bookH("njets_lJJ", 21, -0.5, 20.5, "njets_lJJ", "jet multiplicity", dsigdy(nstr, "1"));
       ncentjets_lJJ = bookH("ncentjets_lJJ", 21, -0.5, 20.5, "ncentjets_lJJ", "central jet multiplicity", dsigdy(nstr, "1"));
