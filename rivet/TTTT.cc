@@ -136,7 +136,7 @@ namespace Rivet {
     for (size_t i = 0; i < jets.size() && i < 8; i++)
       js.push_back(jets[i]);
 
-    double bestprob = 0.0;
+    double bestprob = 1e-50;
     do {
       double prob;
       pair<Jets, Jets> top1_rest;
@@ -441,8 +441,13 @@ namespace Rivet {
 
         pttt_JJ->fill(tt.pt()/TeV, weight);
         mtt_JJ->fill(tt.mass()/TeV, weight);
-        chi2_JJ->fill(chi2_hadhad(addjets), weight);
-        logttprob_JJ->fill(log(ttProb(topPDF0b, topPDF1b, addjets)), weight);
+
+
+        if (addjets.size() >= 6)
+          chi2_JJ->fill(chi2_hadhad(addjets), weight);
+
+        if (addjets.size() >= 4)
+          logttprob_JJ->fill(log(ttProb(topPDF0b, topPDF1b, addjets)), weight);
 
       } if (leps.size() == 1 && topjets.size() == 1) {
         njets_lJ->fill(jets.size(), weight);
@@ -506,8 +511,11 @@ namespace Rivet {
           pttt_lJ->fill(tt.pt()/TeV, weight);
           mtt_lJ->fill(tt.mass()/TeV, weight);
 
-          chi2_lJ->fill(chi2_hadhad(addjets), weight);
-          logttprob_lJ->fill(log(ttProb(topPDF0b, topPDF1b, addjets)), weight);
+          if (addjets.size() >= 6)
+            chi2_lJ->fill(chi2_hadhad(addjets), weight);
+
+          if (addjets.size() >= 4)
+            logttprob_lJ->fill(log(ttProb(topPDF0b, topPDF1b, addjets)), weight);
         }
 
       } else if (leps.size() == 1 && topjets.size() >= 2) {
