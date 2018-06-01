@@ -112,7 +112,7 @@ namespace Rivet {
     }
 
     double mass = alljets.mass();
-    if (mass > 400)
+    if (nb > 1 || mass > 400)
       return 0.0;
 
     // cout << "mass: " << mass << endl;
