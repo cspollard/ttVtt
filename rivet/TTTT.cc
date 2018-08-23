@@ -318,7 +318,7 @@ namespace Rivet {
       njets_ssJ = bookH("njets_ssJ", 21, -0.5, 20.5, "njets_ssJ", "jet multiplicity", dsigdy(nstr, "1"));
       ncentjets_ssJ = bookH("ncentjets_ssJ", 21, -0.5, 20.5, "ncentjets_ssJ", "central jet multiplicity", dsigdy(nstr, "1"));
       nfwdjets_ssJ = bookH("nfwdjets_ssJ", 11, -0.5, 10.5, "nfwdjets_ssJ", "forward jet multiplicity", dsigdy(nstr, "1"));
-      naddjets_ssJ = bookH("naddjets_lJ", 21, -0.5, 20.5, "naddjets_lJ", "additional jet multiplicity", dsigdy(nstr, "1"));
+      naddjets_ssJ = bookH("naddjets_ssJ", 21, -0.5, 20.5, "naddjets_ssJ", "additional jet multiplicity", dsigdy(nstr, "1"));
       ntopjets_ssJ = bookH("ntopjets_ssJ", 4, -0.5, 3.5, "ntopjets_ssJ", "top-tagged jet multiplicity", dsigdy(nstr, "1"));
       naddbjets_ssJ = bookH("naddbjets_ssJ", 21, -0.5, 20.5, "naddbjets_ssJ", "additional $b$-jet multiplicity", dsigdy(nstr, "1"));
       naddljets_ssJ = bookH("naddljets_ssJ", 21, -0.5, 20.5, "naddljets_ssJ", "additional light-jet multiplicity", dsigdy(nstr, "1"));
