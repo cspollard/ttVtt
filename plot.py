@@ -29,7 +29,7 @@ def hasAncestor(p, pid):
   return False
 
 
-def main(infname, outfname):
+def main(infname, outfname, rwfunc):
   import ROOT
   import pylhe
   import itertools as it
@@ -94,6 +94,8 @@ def main(infname, outfname):
     , habseta_t3_notFromV, habseta_t4_notFromV
     ]
 
+  rwf = ROOT.TFormula("rwf", rwfunc)
+
   for evt in pylhe.readLHE(infname):
     glus = [ p for p in evt.particles if abs(p.id) == 21 ]
     v1s = [ p for p in evt.particles if abs(p.id) == 6000055 ]
@@ -111,6 +113,7 @@ def main(infname, outfname):
     wgt = evt.eventinfo.weight
 
     if len(v1s) == 1:
+      wgt *= rwf.Eval(v1s[0].tlv.M())
       hptv1.Fill(v1s[0].tlv.Pt(), wgt)
       hpzv1.Fill(abs(v1s[0].tlv.Pz()), wgt)
 
@@ -179,4 +182,5 @@ def main(infname, outfname):
 
 if __name__ == "__main__":
   from sys import argv
-  main(argv[1], argv[2])
+  rwf = "1" if len(argv) < 4 else argv[3]
+  main(argv[1], argv[2], rwf)
