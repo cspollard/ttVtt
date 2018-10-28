@@ -33,8 +33,8 @@ namespace Rivet {
     return "\\ensuremath{\\frac{\\mathrm{d}" + x + "}{\\mathrm{d}" + y + "} \\Big[ \\frac{" + xunit + "}{" + yunit + "} \\Big]}";
   }
 
-  string dsigdy(const string& x, const string& xunit) {
-    return dxdy(x, "\\sigma", xunit, "\\mathrm{pb}");
+  string dsigdy(const string& y, const string& yunit) {
+    return dxdy("\\sigma", y, "\\mathrm{pb}", yunit);
   }
 
   bool cmp_pt(const Jet& j1, const Jet& j2) {
